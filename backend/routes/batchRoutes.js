@@ -43,13 +43,13 @@ router.post('/createbatch', (req, res) => {
 router.post('/sendnews', async (req, res) => {
     try {
       const { batchId, latestNews } = req.body;
-      console.log(req.body)
+     
       const b = await Batch.findOne({ batchId });
       if (!b) {
         return res.status(404).json({ message: 'Batch not found' });
       }
       
-      b.news.push(latestNews)
+      b.news[0] = latestNews;
       await b.save()
       
       res.json({ message: 'News added successfully' });
@@ -96,7 +96,7 @@ router.post('/sendnews', async (req, res) => {
         return res.status(404).json({ message: 'Batch not found' });
       }
       
-      b.link.push(link)
+      b.link[0] = link
       await b.save()
       
       res.json({ message: 'Link added successfully' });
