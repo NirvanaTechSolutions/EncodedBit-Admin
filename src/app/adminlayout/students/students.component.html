@@ -1,0 +1,26 @@
+<div class="search-bar">
+    <input type="text"  placeholder="Search students..." />
+  </div>
+  
+  <table class="student-table">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Plan</th>
+        <th>Activation</th>
+        <th>Expiration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let get of students">
+        <td>{{ get.usersub }}</td>
+        <td>{{ get.name }}</td>
+        <td>{{ get.amount }}</td>
+        <td>{{ get.plan }}</td>
+        <td>{{ get.activation }}</td>
+        <td>{{ get.expiration }}</td>
+      </tr>
+    </tbody>
+  </table>
