@@ -13,6 +13,9 @@ export class HomelayoutComponent {
   count:any
   loading:any
   stcount:any
+  hover:any
+  showStudents:any
+  studentNames: string[] = [];
   constructor(private main:StudentService,private http:HttpClient){
     this.loading=true
   this.main.getallbaches().then((response)=>{
@@ -21,6 +24,30 @@ export class HomelayoutComponent {
     this.loading=false
   
   })
+  }
+
+  getStudentNames(batchId: string) {
+    const batch = this.batches.find((b:any) => b.batchId === batchId);
+    if (batch && batch.studentList) {
+      this.fetchStudentNames(batchId);
+    } else {
+      this.studentNames = [];
+    }
+  }
+  fetchStudentNames(batchId: string) {
+    this.http.get<any>(`http://localhost:1020/b/students/batch/${batchId}`).subscribe(
+      (response: any) => {
+        this.studentNames = response;
+        
+      },
+      (error: any) => {
+        console.error('Error fetching student names:', error);
+      }
+    );
+  }
+
+  hideStudentNames() {
+    this.studentNames = [];
   }
 
 }

@@ -34,28 +34,24 @@
         </div>
     
         <div *ngFor="let batch of batches" class="news-card">
-            
-            <h3>Batch Id :- {{batch.batchId}}</h3>
-            <div class="student-info" (mouseenter)="batch.showStudents = true" (mouseleave)="batch.showStudents = false">
-                <p>
+            <h3>Batch Id: {{batch.batchId}}</h3>
+            <div class="student-info">
+                <p (mouseenter)="getStudentNames(batch.batchId)" (mouseleave)="hideStudentNames()">
                   Number of students:
-                  <span class="student-count">{{ batch.studentList.length }}</span>
+                  <span class="student-count">{{ batch.studentList?.length || 0 }}</span>
                 </p>
-                <div class="student-list" *ngIf="batch.showStudents">
+                <div class="student-list" *ngIf="studentNames">
                   <ul>
-                  
-                    <li>ajdkfjsifjsfjsofjoisjoji</li>
+                    <div *ngFor="let name of studentNames|keyvalue">
+                    <li >{{ name.value }}</li>
+                </div>
                   </ul>
                 </div>
               </div>
-            <p>Topic:- {{batch.nextClass.topic}}</p>
-            <p>Date:- {{batch.nextClass.date}}</p>
-            <p>Timing:- {{batch.nextClass.timing}}</p>
-
-            <p>Link:- <a target="_blank" href="{{batch.nextClass.joinLink}}">Join</a></p>
-
-          
-         
+            <p>Topic: {{batch.nextClass.topic}}</p>
+            <p>Date: {{batch.nextClass.date}}</p>
+            <p>Timing: {{batch.nextClass.timing}}</p>
+            <p>Link: <a target="_blank" href="{{batch.nextClass.joinLink}}">Join</a></p>
           </div>
     
     

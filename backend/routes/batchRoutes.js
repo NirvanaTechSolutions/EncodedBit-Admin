@@ -109,6 +109,41 @@ router.post('/sendnews', async (req, res) => {
     }
   });
 
+  router.get('/students/batch/:batchId', async (req, res) => {
+    try {
+      const batchId = req.params.batchId;
+      
+  
+      // Find the batch with matching batch ID and populate the studentList field
+      const batch = await Batch.findOne({ batchId }).populate('studentList');
+
+  
+   
+      if (!batch) {
+        return res.status(404).json({ error: 'Batch not found' });
+      }
+  
+      // Extract the usersub values from the studentList
+      const studentList = batch.studentList;
+
+      
+  
+          // Fetch student names from the user schema using studentList
+    const studentNames = await User.find({ usersub: { $in: studentList } })
+    .select('name');
+
+  // Extract only the names from the retrieved user objects
+  const names = studentNames.map(student => student.name);
+
+  console.log(names)
+
+  res.json({ names });
+    } catch (error) {
+      console.error('Error fetching student names:', error);
+      res.status(500).json({ error: 'An error occurred while fetching student names' });
+    }
+  });
+
   router.post('/deletebatch', async (req, res) => {
     try {
       const { batchId } = req.body;

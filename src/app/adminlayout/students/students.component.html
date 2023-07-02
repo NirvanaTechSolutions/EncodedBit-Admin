@@ -24,7 +24,7 @@
     <tbody>
       <tr *ngFor="let get of students">
         <td>{{ get.usersub }}</td>
-        <td>{{ get.name }}</td>
+        <td>{{ get.name }}({{get.plan}})</td>
         <td *ngIf="amount">{{ get.amount }}</td>
         <td *ngIf="plan">{{ get.plan }}</td>
         <td *ngIf="activation">{{ get.activation }}</td>
