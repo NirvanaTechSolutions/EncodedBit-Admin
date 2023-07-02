@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+interface Student {
+  _id: string;
+  name: string;
+  plan:string
+  // Add other properties if needed
+}
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +45,9 @@ export class StudentService {
   }
 
   
+
+  searchStudents(query: string): Observable<Student[]> {
+    const url = `http://localhost:1020/user/getstudents?query=${encodeURIComponent(query)}`;
+    return this.http.get<Student[]>(url);
+  }
 }

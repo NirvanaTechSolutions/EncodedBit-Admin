@@ -6,16 +6,33 @@ import { CreatebatchComponent } from './batchlayout/createbatch/createbatch.comp
 import { SendnewsComponent } from './batchlayout/sendnews/sendnews.component';
 import { SendscheduleComponent } from './batchlayout/sendschedule/sendschedule.component';
 import { SendlinkComponent } from './batchlayout/sendlink/sendlink.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { MainComponent } from './main/main.component';
+import { DeletebatchComponent } from './batchlayout/deletebatch/deletebatch.component';
+import { BatchwiseComponent } from './downloadreports/batchwise/batchwise.component';
+import { PlanwiseComponent } from './downloadreports/planwise/planwise.component';
 
 const routes: Routes = [
   {
-    component:AppComponent,
+    component:MainComponent,
     path:''
   }
   ,
   {
+    component:DeletebatchComponent,
+    path:'deletebatch'
+  },
+  {
+    component:BatchwiseComponent,
+    path:'dbatchwise'
+  },
+  {
+    component:PlanwiseComponent,
+    path:'dplanwise'
+  },
+  {
     component:StudentsComponent,
-    path:'students'
+    path:'allstudents'
   },
   {
     component:CreatebatchComponent,

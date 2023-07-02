@@ -215,3 +215,5 @@ button {
 .header .navbar .menu-item.active.has-collapsible span::after {
   transform: rotate(90deg);
 }
+
+

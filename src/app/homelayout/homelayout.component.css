@@ -1,0 +1,44 @@
+.latest-news {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .news-card {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .news-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  .news-card h3 {
+    margin-top: 10px;
+  }
+  
+  .news-card p {
+    margin-top: 10px;
+    color: #666;
+  }
+  
+  .student-info {
+    position: relative;
+  }
+  
+  .student-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #cccccc;
+  }
+  
+  .news-card:hover .student-list {
+    display: block;
+  }

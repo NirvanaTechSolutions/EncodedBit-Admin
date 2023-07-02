@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="latest-news">
+       
+        <h1>Latest News</h1>
+        <div *ngIf="loading==true">
+            <app-loading></app-loading>
+        
+        </div>
+    
+        <div *ngFor="let batch of batches" class="news-card">
+            
+            <h3>Batch Id :- {{batch.batchId}}</h3>
+            <p>{{batch.news}}</p>
+          </div>
+    
+    
+    
+      </div>
+      <br>
+
+      <div class="latest-news">
+       
+        <h1>Schedules</h1>
+        <div *ngIf="loading==true">
+            <app-loading></app-loading>
+        
+        </div>
+    
+        <div *ngFor="let batch of batches" class="news-card">
+            
+            <h3>Batch Id :- {{batch.batchId}}</h3>
+            <div class="student-info" (mouseenter)="batch.showStudents = true" (mouseleave)="batch.showStudents = false">
+                <p>
+                  Number of students:
+                  <span class="student-count">{{ batch.studentList.length }}</span>
+                </p>
+                <div class="student-list" *ngIf="batch.showStudents">
+                  <ul>
+                  
+                    <li>ajdkfjsifjsfjsofjoisjoji</li>
+                  </ul>
+                </div>
+              </div>
+            <p>Topic:- {{batch.nextClass.topic}}</p>
+            <p>Date:- {{batch.nextClass.date}}</p>
+            <p>Timing:- {{batch.nextClass.timing}}</p>
+
+            <p>Link:- <a target="_blank" href="{{batch.nextClass.joinLink}}">Join</a></p>
+
+          
+         
+          </div>
+    
+    
+      </div>
+</body>
+</html>

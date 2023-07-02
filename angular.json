@@ -27,7 +27,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/myjs/index.js",
+              "node_modules/file-saver/dist/FileSaver.min.js"
+            ]
           },
           "configurations": {
             "production": {

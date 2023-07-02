@@ -1,0 +1,29 @@
+<!-- app.component.html -->
+
+<app-sidebar></app-sidebar>
+<div *ngIf="loading==true">
+    <app-loading></app-loading>
+
+</div>
+<div class="container">
+    <div class="card">
+      <h1 class="card-title">Download Batchwise Report</h1>
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="plan">Plan:</label>
+          <select id="plan" name="plan" [(ngModel)]="selectedBatchId" required>
+            <option value="">Select Plan</option>
+
+            <option value="Basic">basic</option>
+            <option value="Pro">Pro</option>
+            <option value="Project">Project</option>
+          
+          </select>
+        </div>
+
+  
+        <button type="submit">Download</button>
+      </form>
+    </div>
+  </div>
+  

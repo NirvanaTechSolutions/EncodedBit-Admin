@@ -1,5 +1,5 @@
 <!-- app.component.html -->
-
+<app-sidebar></app-sidebar>
 <div *ngIf="loading==true">
     <app-loading></app-loading>
 
@@ -20,23 +20,4 @@
     </form>
   </div>
 
-  <div class="search-bar">
-    <input type="text"  placeholder="Search students..." />
-  </div>
-  
-  <table class="student-table">
-    <thead>
-      <tr>
-        <th>User ID</th>
-        <th>Name</th>
-      
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let get of students">
-        <td>{{ get.usersub }}</td>
-        <td>{{ get.name }}({{get.plan}})</td>
-      
-      </tr>
-    </tbody>
-  </table>
+<app-students [showSidebar]="false" [amount]="false" [plan]="false" [activation]="false" [expiration]="false"></app-students>
