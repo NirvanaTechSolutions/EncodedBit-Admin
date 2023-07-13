@@ -11,11 +11,16 @@ import { MainComponent } from './main/main.component';
 import { DeletebatchComponent } from './batchlayout/deletebatch/deletebatch.component';
 import { BatchwiseComponent } from './downloadreports/batchwise/batchwise.component';
 import { PlanwiseComponent } from './downloadreports/planwise/planwise.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 
 const routes: Routes = [
   {
     component:MainComponent,
     path:''
+  }
+  ,{
+    component:ReviewsComponent,
+    path:'showreview'
   }
   ,
   {

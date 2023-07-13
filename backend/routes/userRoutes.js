@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/paymentModel');
 const Student = require('../models/userModel');
+const Review = require('../models/reviewModel');
 const XLSX = require('xlsx');
 const fs = require('fs');
 
@@ -75,6 +76,48 @@ router.get('/allstudentsexcel', async (req, res) => {
     console.error('Error saving students to Excel:', error);
     res.status(500).json({ error: 'An error occurred while saving students to Excel' });
   }
+});
+
+
+router.get('/getreviews', (req, res) => {
+  Review.find({ approved: false })
+    .then((reviews) => {
+      res.status(200).json(reviews);
+    })
+    .catch((error) => {
+      console.log('Error retrieving reviews:', error);
+      res.status(500).json({ message: 'Error retrieving reviews' });
+    });
+});
+
+
+router.delete('/deletereview/:reviewId', (req, res) => {
+  const reviewId = req.params.reviewId;
+
+  // Delete the review from the database using the reviewId
+  Review.deleteOne({ reviewId })
+    .then(() => {
+      res.status(200).json({ message: 'Review deleted successfully' });
+    })
+    .catch((error) => {
+      console.log('Error deleting review:', error);
+      res.status(500).json({ message: 'Error deleting review' });
+    });
+});
+
+// Mark a review as approved by reviewId
+router.put('/approvereview/:reviewId', (req, res) => {
+  const reviewId = req.params.reviewId;
+
+  // Find the review by reviewId and update the approved field to true
+  Review.findOneAndUpdate({ reviewId }, { approved: true })
+    .then(() => {
+      res.status(200).json({ message: 'Review approved successfully' });
+    })
+    .catch((error) => {
+      console.log('Error approving review:', error);
+      res.status(500).json({ message: 'Error approving review' });
+    });
 });
 
 module.exports = router;

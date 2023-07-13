@@ -1,0 +1,26 @@
+<app-sidebar></app-sidebar>
+<h2>Review List</h2>
+
+<table class="review-table">
+  <thead>
+    <tr>
+      <th>Review ID</th>
+      <th>Name</th>
+      <th>Rating</th>
+      <th>Feedback</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let review of reviews">
+      <td>{{ review.reviewId }}</td>
+      <td>{{ review.name }}</td>
+      <td>{{ review.rating }}</td>
+      <td>{{ review.feedback }}</td>
+      <td>
+        <button (click)="deleteReview(review.reviewId)" class="delete-button">Delete</button>
+        <button (click)="approveReview(review.reviewId)" [disabled]="review.approved" class="approve-button">Approve</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

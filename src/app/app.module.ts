@@ -17,6 +17,7 @@ import { HomelayoutComponent } from './homelayout/homelayout.component';
 import { DeletebatchComponent } from './batchlayout/deletebatch/deletebatch.component';
 import { BatchwiseComponent } from './downloadreports/batchwise/batchwise.component';
 import { PlanwiseComponent } from './downloadreports/planwise/planwise.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,9 @@ import { PlanwiseComponent } from './downloadreports/planwise/planwise.component
     HomelayoutComponent,
     DeletebatchComponent,
     BatchwiseComponent,
-    PlanwiseComponent
+    PlanwiseComponent,
+    ReviewsComponent,
+   
   ],
   imports: [
     BrowserModule,
