@@ -1,27 +1,6 @@
 const mongoose = require('mongoose');
 
-const paymentSchema = new mongoose.Schema({
-  amount: {
-    type: Number,
-    required: true,
-  },
-  order_id: {
-    type: String,
-    required: true,
-  },
-  payment_id: {
-    type: String,
-  },
-  plan: {
-    type: String,
-  },
-  activation: {
-    type: Date,
-  },
-  expiration: {
-    type: Date,
-  },
-});
+
 
 const userSchema = new mongoose.Schema({
   usersub: String,
@@ -33,7 +12,12 @@ const userSchema = new mongoose.Schema({
   mobileno: Number,
   pincode: Number,
   isprofile: Boolean,
-  issubscribed: Boolean
+  issubscribed: Boolean,
+  batchId: {
+    type: String,
+    default: 'unset' 
+  }
+  
 });
 
 const User = mongoose.model('User', userSchema);

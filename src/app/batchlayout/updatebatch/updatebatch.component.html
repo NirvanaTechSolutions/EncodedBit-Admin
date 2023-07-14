@@ -1,0 +1,127 @@
+<style>
+    .container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+  
+    .batch-section {
+        flex-basis: 45%;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    .batch-section select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    .batch-section h3 {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  
+    .batch-section ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+  
+    .batch-section li {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+  
+    .unset-section {
+      flex-basis: 45%;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    .unset-section h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+  
+    .unset-section ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .unset-section li {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.save-button:active {
+  background-color: #3e8e41;
+}
+
+  </style>
+  <app-sidebar></app-sidebar>
+
+  <span>Tip:- This Update Feature Is Drag And Drop Type</span>
+  
+  <div class="container">
+    <!-- Section to display batches and their students -->
+    <div class="batch-section" (dragover)="allowDrop($event)" (drop)="drop($event)">
+      <label for="batchSelect">Select Batch:</label>
+      <select id="batchSelect" name="batchSelect" [(ngModel)]="selectedBatchId" (change)="onBatchChange()">
+        <option value="">All Batches</option>
+        <option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchId }}</option>
+      </select>
+  
+      <h3>Students in Selected Batch:</h3>
+      <ul>
+        <li style="border: 1px solid rgb(0, 255, 26);" *ngFor="let student of selectedstudent" draggable="true" (dragstart)="drag($event, student)">{{ student.name }}({{student.mobileno}})</li>
+      </ul>
+    </div>
+  
+    <!-- Section to display students with unset batch IDs -->
+    <div class="unset-section" (dragover)="allowDrop($event)" (drop)="drop($event)">
+      <h3>Students(Not In Any Batch)</h3>
+      <ul>
+        <li style="border: 1px solid red;" *ngFor="let student of unsetBatchStudents" draggable="true" (dragstart)="drag($event, student)">{{ student.name }}</li>
+      </ul>
+    </div>
+  </div>
+  
+  
+  <div class="button-container">
+    <button class="save-button" (click)="save()">Save</button>
+  </div>
+<h3 style="text-align: center;" *ngIf="happy">Batch Updated Sucessfully</h3>
+  <div *ngIf="loading==true">
+    <app-loading></app-loading>
+
+</div>

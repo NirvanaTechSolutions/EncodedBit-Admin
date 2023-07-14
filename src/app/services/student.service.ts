@@ -24,7 +24,7 @@ export class StudentService {
   
     return new Promise(async (resolve, reject) => {
       
-       this.http.get(`http://localhost:1020/user/getallusers`).subscribe((response)=>{
+       this.http.get(`http://localhost:1020/user/unsetBatchId`).subscribe((response)=>{
         resolve(response)
        }
        )

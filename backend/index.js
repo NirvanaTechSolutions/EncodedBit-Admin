@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 uri=  'mongodb+srv://nirvanatechsolutions:XzAWqQaiQAAgsacn@encodedbits.npwoljq.mongodb.net/'
 const app = express();
+const User = require('./models/userModel');
+const socketIO = require('socket.io');
 
 
 const cors=require("cors");
@@ -67,6 +69,27 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
     // Start the server
-    app.listen(1020, () => {
+    const serverwithsocket =   app.listen(1020, () => {
     console.log('Server is running on port 1020');
     });
+
+    const io = require('socket.io')(serverwithsocket, {
+      cors: {
+       origin: ["http://localhost:60920"], //specific origin you want to give access to,
+   }}); //? invoking the func also something like func()
+
+
+    io.on('connection',async (socket) => {
+      console.log('a user connected',socket.id);
+    
+
+    
+        
+        socket.on('disconnect', function () {
+          console.log('A user disconnected');
+        });
+   
+      });
+
+     
+    

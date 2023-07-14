@@ -12,6 +12,7 @@ import { DeletebatchComponent } from './batchlayout/deletebatch/deletebatch.comp
 import { BatchwiseComponent } from './downloadreports/batchwise/batchwise.component';
 import { PlanwiseComponent } from './downloadreports/planwise/planwise.component';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { UpdatebatchComponent } from './batchlayout/updatebatch/updatebatch.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
   {
     component:SendlinkComponent,
     path:'sendlink'
+  },
+  {
+    component:UpdatebatchComponent,
+    path:'updatebatch'
   }
   
 ];

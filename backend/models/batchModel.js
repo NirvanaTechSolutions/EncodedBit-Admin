@@ -3,11 +3,12 @@ const mongoose = require('mongoose');
 const batchSchema = new mongoose.Schema({
   batchId: {
     type: Number,
-    required: true
+    required: true,
+    unique:true
   },
   studentList: {
     type: [String],
-    required: true
+    required: true  
   },
 
   news: [

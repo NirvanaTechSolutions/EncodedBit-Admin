@@ -120,4 +120,20 @@ router.put('/approvereview/:reviewId', (req, res) => {
     });
 });
 
+
+
+router.get('/unsetBatchId', async (req, res) => {
+  try {
+    // Fetch users with batchId set to 'unset' from the Student model
+    const users = await Student.find({ batchId: 'unset' }).exec();
+    const usersub = users.map(user => user.usersub); // Extract userSubs from users
+   
+    // Find the payment objects for the userSubs in the Payment model
+    const sortusers = await User.find({ usersub: { $in: usersub } }).exec();
+    console.log(sortusers)
+    res.json(sortusers);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve payments' });
+  }
+});
 module.exports = router;

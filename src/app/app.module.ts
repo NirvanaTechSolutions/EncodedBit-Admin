@@ -18,6 +18,7 @@ import { DeletebatchComponent } from './batchlayout/deletebatch/deletebatch.comp
 import { BatchwiseComponent } from './downloadreports/batchwise/batchwise.component';
 import { PlanwiseComponent } from './downloadreports/planwise/planwise.component';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { UpdatebatchComponent } from './batchlayout/updatebatch/updatebatch.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
     BatchwiseComponent,
     PlanwiseComponent,
     ReviewsComponent,
+    UpdatebatchComponent,
    
   ],
   imports: [

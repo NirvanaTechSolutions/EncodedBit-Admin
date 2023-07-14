@@ -8,27 +8,55 @@ const ExcelJS = require('exceljs');
 
 
 router.post('/createbatch', (req, res) => {
-    const { batchId, studentIds,latestNews, nextClass, messagingAppGroupLink } = req.body;
-    console.log(res)
-  
-    const newBatch = new Batch({
-      batchId: batchId,
-      studentList: studentIds,  
-      latestNews: latestNews || '', // Set to empty string if not provided
-      nextClass: nextClass || {}, // Set to empty object if not provided
-      messagingAppGroupLink: messagingAppGroupLink || '' // Set to empty string if not provided
-    });
-  
-    newBatch.save()
-      .then(() => {
-        console.log('Batch saved to database');
-        res.json({ success: true });
-      })
-      .catch(err => {
-        console.error('Failed to save Batch to database:', err);
-        res.status(500).json({ success: false });
+  const { batchId, studentIds, latestNews, nextClass, messagingAppGroupLink } = req.body;
+  console.log(res);
+
+  // Check if batch with the given batchId already exists
+  Batch.findOne({ batchId: batchId })
+    .then(existingBatch => {
+      if (existingBatch) {
+        // Batch with the given batchId already exists
+        return res.status(400).json({ success: false, message: 'Batch already exists' });
+      }
+
+      const newBatch = new Batch({
+        batchId: batchId,
+        studentList: studentIds,
+        latestNews: latestNews || '', // Set to empty string if not provided
+        nextClass: nextClass || {}, // Set to empty object if not provided
+        messagingAppGroupLink: messagingAppGroupLink || '' // Set to empty string if not provided
       });
-  });
+
+      newBatch
+        .save()
+        .then(() => {
+          console.log('Batch saved to database');
+          // Update the batchId field in User schema for each student in studentIds
+          User.updateMany(
+            { usersub: { $in: studentIds } },
+            { $set: { batchId: batchId } }
+          )
+            .then(() => {
+              console.log('User batchId updated');
+              res.json({ success: true });
+            })
+            .catch(err => {
+              console.error('Failed to update User batchId:', err);
+              res.status(500).json({ success: false });
+            });
+        })
+        .catch(err => {
+          console.error('Failed to save Batch to database:', err);
+          res.status(500).json({ success: false });
+        });
+    })
+    .catch(err => {
+      console.error('Error checking existing batch:', err);
+      res.status(500).json({ success: false });
+    });
+});
+
+
   
   router.get('/getbatches', async (req, res) => {
     try {
@@ -109,9 +137,45 @@ router.post('/sendnews', async (req, res) => {
     }
   });
 
+//get batch whole user object
+  router.get('/students/getbatch/:batchId', async (req, res) => {
+    try {
+      const batchId = req.params.batchId;
+      console.log(this.batchId)
+      
+  
+      // Find the batch with matching batch ID and populate the studentList field
+      const batch = await Batch.findOne({ batchId }).populate('studentList');
+
+  
+   
+      if (!batch) {
+        return res.status(404).json({ error: 'Batch not found' });
+      }
+  
+      // Extract the usersub values from the studentList
+      const studentList = batch.studentList;
+
+      
+  
+          // Fetch student names from the user schema using studentList
+    const studentNames = await User.find({ usersub: { $in: studentList } })
+   
+
+
+  res.json( studentNames );
+    } catch (error) {
+      console.error('Error fetching student names:', error);
+      res.status(500).json({ error: 'An error occurred while fetching student names' });
+    }
+  });
+
+
+//get batch only names 
   router.get('/students/batch/:batchId', async (req, res) => {
     try {
       const batchId = req.params.batchId;
+      console.log(this.batchId)
       
   
       // Find the batch with matching batch ID and populate the studentList field
@@ -143,20 +207,27 @@ router.post('/sendnews', async (req, res) => {
       res.status(500).json({ error: 'An error occurred while fetching student names' });
     }
   });
-
+//delete that batch
   router.post('/deletebatch', async (req, res) => {
     try {
       const { batchId } = req.body;
-      console.log(req.body)
-      const b = await Batch.findOne({ batchId });
-      if (!b) {
+      console.log(req.body);
+  
+      const batch = await Batch.findOne({ batchId });
+      if (!batch) {
         return res.status(404).json({ message: 'Batch not found' });
       }
-      
-     
-      await b.deleteOne()
-      
-      res.json({ message: 'Link added successfully' });
+  
+      // Find users with the matching usersub in the User schema and set their batchId to "unset"
+      const usersubArray = batch.studentList;
+      await User.updateMany(
+        { usersub: { $in: usersubArray } },
+        { $set: { batchId: 'unset' } }
+      );
+  
+      await batch.deleteOne();
+  
+      res.json({ message: 'Batch deleted successfully' });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
@@ -300,6 +371,41 @@ router.post('/sendnews', async (req, res) => {
     } catch (error) {
       console.error('Error generating plan report:', error);
       res.status(500).json({ error: 'An error occurred while generating the plan report' });
+    }
+  });
+  
+
+  router.post('/selectedStudents', async (req, res) => {
+    try {
+      const { selectedStudents, batchId } = req.body;
+    
+      // Update the studentList field in the Batch schema for the selected batchId
+      await Batch.updateOne({ batchId }, { studentList: selectedStudents });
+  
+      // Update the batchId field in the User schema for the selected students
+      await User.updateMany({ usersub: { $in: selectedStudents } }, { $set: { batchId } });
+    
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error updating selected students:', error);
+      res.status(500).json({ error: 'An error occurred while updating selected students' });
+    }
+  });
+
+  router.post('/unselectedStudents', async (req, res) => {
+    try {
+      const { unselectedStudents } = req.body;
+  
+      // Remove the unselected students from the studentList field in the Batch schema
+      await Batch.updateMany({ studentList: { $in: unselectedStudents } }, { $pull: { studentList: { $in: unselectedStudents } } });
+  
+      // Update the batchId field to 'unset' in the User schema for the unselected students
+      await User.updateMany({ usersub: { $in: unselectedStudents } }, { $set: { batchId: 'unset' } });
+    
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error updating unselected students:', error);
+      res.status(500).json({ error: 'An error occurred while updating unselected students' });
     }
   });
   
